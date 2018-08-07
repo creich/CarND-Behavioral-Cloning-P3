@@ -14,20 +14,32 @@ with open('../data/driving_log.csv') as csvfile:
 
 images = []
 measurements = []
-for line in lines:
-    source_path = line[0]
-    filename = source_path.split('/')[-1]
-    current_path = '../data/IMG/' + filename
-    image = cv2.imread(current_path)
-    images.append(image)
-    measurement = float(line[3])
-    measurements.append(measurement)
 
-    # append flipped versions of images as well
-    #image_flipped = np.fliplr(image)
-    #images.append(image_flipped)
-    #measurement_flipped = -measurement
-    #measurements.append(measurement_flipped)
+steering_correction = 0.05
+
+for line in lines:
+   # use images from left and right camera as well
+   for index in range(3):
+      source_path = line[index]
+      filename = source_path.split('/')[-1]
+      current_path = '../data/IMG/' + filename
+      image = cv2.imread(current_path)
+      images.append(image)
+      measurement = float(line[3])
+
+      # manipulation of steering angle to use left and right pictures as well
+      if index == 1:
+         measuremnt = measurement + steering_correction
+      elif index == 2:
+         measuremnt = measurement - steering_correction
+
+      measurements.append(measurement)
+
+      # append flipped versions of images as well
+      image_flipped = np.fliplr(image)
+      images.append(image_flipped)
+      measurement_flipped = -measurement
+      measurements.append(measurement_flipped)
 
 
 X_train = np.array(images)
