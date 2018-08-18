@@ -54,23 +54,57 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+I tried a few different network layout, but then i decided to use the one from NVIDIA mentioned during the lessons as starting point. I also tried some modifications to that layout, such as adding dropouts or changing the architecture. But for some reason (i don't understand it yet) adding dropouts for example didn't really help improving the robustness of the network. i guess i'll still have to play around a bit with such networks, to get more of a feeling for it. In the end the only modification i added, have been some MaxPooling layers between the convolutions and therefor i changed the strides of the convolutional layers to 1x1, to make the output dimensions fit into the following layers.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+My model consists of a convolution neural network with 3 5x5 filters followed by 2 3x3 filters and depths between 24 and 64 (model.py lines 72-83). The model includes RELU layers to introduce nonlinearity (72-90) and MaxPooling between the convolutions. Also the data is normalized in the model using a Keras lambda layer (code line 67) as well as cropped (to focus on a region of interest within the images) (code line 68)
+
+My final model consisted of the following layers:
+
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160x320x3 RGB image   							| 
+| keras lambda   		| normalization  (x / 255.0) - 0.5			| 
+| cropping       		| cut out region of interest (dropped 70px from top and 25 px from bottom)	| 
+| Convolution 5x5    		| depth 24, 1x1 stride, same padding 	| 
+| RELU					|												|
+| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
+| Convolution 5x5    		| depth 36, 1x1 stride, same padding 	| 
+| RELU					|												|
+| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
+| Convolution 5x5    		| depth 48, 1x1 stride, same padding 	| 
+| RELU					|												|
+| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
+| Convolution 3x3    		| depth 64, 1x1 stride, same padding 	| 
+| RELU					|												|
+| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
+| Convolution 3x3    		| depth 64, 1x1 stride, same padding 	| 
+| RELU					|												|
+| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
+| Fully connected		| Output 1164 |
+| RELU					|												|
+| Fully connected		| Output 100 |
+| RELU					|												|
+| Fully connected		| Output 50 |
+| RELU					|												|
+| Fully connected		| Output 10 |
+| RELU					|												|
+| Fully connected		| --> Final Output 1 |
+
+
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout and MaxPooling layers in order to reduce overfitting (model.py lines XX, XX and XX). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 96). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 95).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road as well as driving the track in opposite directions. I also repeated driving critical parts of the road. I also artificially augmented the training data, by flipping the given images and inverting the steering angles accordingly as well as using the images from the left and right camera with some fixed offset for the steering angle. 
 
 For details about how I created the training data, see the next section. 
 
