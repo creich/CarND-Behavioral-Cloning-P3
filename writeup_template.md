@@ -54,9 +54,10 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-I tried a few different network layout, but then i decided to use the one from NVIDIA mentioned during the lessons as starting point. I also tried some modifications to that layout, such as adding dropouts or changing the architecture. But for some reason (i don't understand it yet) adding dropouts for example didn't really help improving the robustness of the network. i guess i'll still have to play around a bit with such networks, to get more of a feeling for it. In the end the only modification i added, have been some MaxPooling layers between the convolutions and therefor i changed the strides of the convolutional layers to 1x1, to make the output dimensions fit into the following layers.
+I tried a few different network layouts, but then i decided to try the one from NVIDIA mentioned during the lessons, which gave me a pretty good starting point. From there i tried some minor modifications to that layout, such as adding dropouts or MaxPooling, as well as changing the architecture. 
+In the end the modification i added is  an 'oscillation' of MaxPooling and dropouts between the convolutional layers. When i added a MaxPooling layer, i changed the strides of the convolutional layers to 1x1, whereas i set it to 2x2 when a dropout was following, in order to make the output dimensions fit into the following layers.
 
-My model consists of a convolution neural network with 3 5x5 filters followed by 2 3x3 filters and depths between 24 and 64 (model.py lines 72-83). The model includes RELU layers to introduce nonlinearity (72-90) and MaxPooling between the convolutions. Also the data is normalized in the model using a Keras lambda layer (code line 67) as well as cropped (to focus on a region of interest within the images) (code line 68)
+My model consists of a convolution neural network with 3 5x5 filters followed by 2 3x3 filters and depths between 24 and 64 (model.py lines 69-77). The model includes RELU layers to introduce nonlinearity (69-83) and MaxPooling or dropouts between the convolutions. Also the data is normalized in the model using a Keras lambda layer (code line 67) as well as cropped (to focus on a region of interest within the images) (code line 68)
 
 My final model consisted of the following layers:
 
@@ -68,15 +69,13 @@ My final model consisted of the following layers:
 | Convolution 5x5    		| depth 24, 1x1 stride, same padding 	| 
 | RELU					|												|
 | Max pooling	      	| 2x2 pool_size, 2x2 stride		|
-| Convolution 5x5    		| depth 36, 1x1 stride, same padding 	| 
+| Convolution 5x5    		| depth 36, 2x2 stride, same padding 	| 
 | RELU					|												|
-| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
 | Convolution 5x5    		| depth 48, 1x1 stride, same padding 	| 
 | RELU					|												|
 | Max pooling	      	| 2x2 pool_size, 2x2 stride		|
-| Convolution 3x3    		| depth 64, 1x1 stride, same padding 	| 
+| Convolution 3x3    		| depth 64, 2x2 stride, same padding 	| 
 | RELU					|												|
-| Max pooling	      	| 2x2 pool_size, 2x2 stride		|
 | Convolution 3x3    		| depth 64, 1x1 stride, same padding 	| 
 | RELU					|												|
 | Max pooling	      	| 2x2 pool_size, 2x2 stride		|
@@ -94,13 +93,13 @@ My final model consisted of the following layers:
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout and MaxPooling layers in order to reduce overfitting (model.py lines XX, XX and XX). 
+The model contains dropouts (model.py lines 72 and 76) and MaxPooling (model.py lines 70, 74 and 78) layers in order to reduce overfitting. 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 96). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 87). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 95).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 86).
 
 #### 4. Appropriate training data
 
