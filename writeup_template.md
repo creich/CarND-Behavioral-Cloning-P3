@@ -49,6 +49,8 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
+-> i explicitly did not use a python generator due to heavy performance issues. i really liked the idea of preparing a preprocessing pipeling outside of the network and make it reusable through a generator and meanwhile saving memory. but unfortunately training with such an generator took literally forever. i don't know yet who or why but will investigate this for future applications. just to let you know.
+
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
