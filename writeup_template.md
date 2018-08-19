@@ -142,7 +142,7 @@ As mentioned above, i added recordings of specific situations, where problems in
 To augment the data sat, I also flipped images and angles thinking that this would additionally avoid overfitting. I also mentioned most of that in the former section.
 
 
-After the collection process and additional augmentation, I had ~13k data points. I then preprocessed this data by first changing the color space to RGB and then (within the model) normalizing and cropping it.
+After the collection process and additional augmentation, I had 19649 data points. I then preprocessed this data by first changing the color space to RGB and then (within the model) normalizing and cropping it.
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
